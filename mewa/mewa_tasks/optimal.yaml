@@ -1,0 +1,72 @@
+!!python/object:sawyer_gazebo_blocks_puzzle.task.Task
+goal: castle
+block_colors: [orange, blue, green, red]
+# The number of blocks per color
+blocks: [ 5, 5, 5, 5 ]
+supervisor_block_color: purple
+supervisor_blocks: 8
+worker_task:
+  !!python/object:sawyer_gazebo_blocks_puzzle.task.WorkerTask
+  struct_type: tower
+  blocks_per_struct: 3
+  # The position of all blocks relative to the first block. The first element represents the first block and
+  # should be [0, 0, 0]. The length of the list should be equal to blocks_per_struct
+  blocks_position:
+    - !!python/tuple [0, 0, 0]
+    - !!python/tuple [0, 0, 0.04]
+    - !!python/tuple [0, 0, 0.08]
+  # A complex worker is a worker who can make mistakes
+  complex_worker: True
+  mistake_type: pyramid
+  # It is possible to make a mistake whenever a second block is added to a structure. The probability of making a
+  # mistake depends on the number of differently coloured blocks on the worker's side. For each mistake type, the task
+  # defines 2 Gaussian distributions, sampled when the worker is created. The first is used to sample a mean mu; the
+  # second a std sigma. The probability of making a mistake of that type will then be sampled from (mu, sigma) whenever
+  # a state in which that mistake can happen is reached
+  mistake_gaussians:
+    - - [0.3821256458759308, 0.12]
+      - [0.09, 0.02]
+    - - [0.27761128544807434, 0.12]
+      - [0.09, 0.02]
+    - - [0.18698181211948395, 0.12]
+      - [0.09, 0.02]
+    - - [0.09432228654623032, 0.12]
+      - [0.09, 0.02]
+  rewards: [ -0.22448296658694744, -0.18796557560563087, -0.10312814265489578, -0.09230244904756546, 0 ]
+  # How the blocks should be arranged when a mistake happens. The positions are relative to the first block. The first
+  # element represents the first block and should be [0, 0, 0]. The length of the list should be equal to
+  # blocks_per_struct
+  mistake_positions:
+    - !!python/tuple [0, 0, 0]
+    - !!python/tuple [0, 0.05, 0]
+    - !!python/tuple [0, 0.025, 0.04]
+supervisor_task:
+  !!python/object:sawyer_gazebo_blocks_puzzle.task.SupervisorTask
+  # How many worker structures the supervisor needs for the game to end
+  struct_count: 4
+  # How many steps the supervisor has to take to complete its own structure
+  subgoals_count: 3
+  # The specific structures the supervisor needs before completing another part of its goal. A structure's colour is
+  # given by the first block in that structure. It is assumed the sub-goals have to be completed in order.
+  # The length of the list should be equal to subgoals_count
+  subgoals_requirements:
+    - [ red ]
+    - [ blue ]
+    - [ green ]
+  # A nested list of all sub-goals. The length of the list should be equal to subgoals_count. Each element is another
+  # list, representing the coordinates of that block, relative to the structure's center
+  subgoals:
+    - - [ 0.05150, 0.02650, 0 ]
+      - [ 0.05150, -0.0265, 0 ]
+    - - [ -0.0015, 0.02650, 0 ]
+      - [ -0.0015, -0.0265, 0 ]
+    - - [ 0.05150, 0.02650, 0.05 ]
+      - [ 0.05150, -0.0265, 0.05 ]
+      - [ -0.0015, 0.02650, 0.05 ]
+      - [ -0.0015, -0.0265, 0.05 ]
+  # The position of each of the worker's structure, relative to the center of the overall structure
+  worker_struct:
+    - [ 0.0810, 0.0810, 0 ]
+    - [ 0.0810, -0.081, 0 ]
+    - [ -0.081, 0.0810, 0 ]
+    - [ -0.081, -0.081, 0 ]

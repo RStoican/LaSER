@@ -1,0 +1,17 @@
+services:
+  run_laser:
+    image: laser
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ..:/laser
+    environment:
+      - WANDB_API_KEY
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
