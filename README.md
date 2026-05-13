@@ -12,7 +12,7 @@ It is recommended the code be run through Docker.
 
 ### Wandb Logging (Optional)
 
-If you wish to log your runs to wandb, create a file name `docker/.env` and add your API key inside: `WANDB_API_KEY=<YOUR_WANDB_API_KEY>`
+If you wish to log your runs to wandb, create a file named `docker/.env` and add your API key inside: `WANDB_API_KEY=<YOUR_WANDB_API_KEY>`
 
 If not using wandb, run your scripts with the `--no-wandb` parameter. 
 
@@ -70,3 +70,7 @@ the `--save-path` argument.
 
 LaSER was built on top of several open-source repositories: **[garage](https://github.com/rlworkgroup/garage)**, 
 **[VariBAD](https://github.com/lmzintgraf/varibad)**, **[TrMRL](https://github.com/luckeciano/transformers-metarl)**
+
+## License
+
+This project is licensed under the MIT License.
